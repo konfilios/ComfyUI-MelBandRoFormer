@@ -149,6 +149,15 @@ _MODEL_CONFIG_OVERRIDES_BY_FILENAME = {
     for name, config in _MODEL_CONFIG_OVERRIDES.items()
 }
 
+# viperx BS-RoFormer ep_317: the checkpoint's own yaml specifies stft_hop_length: 441, but the
+# shape-inferred default (512) separates quietly wrong (lower correlation with the reference
+# output and noticeably more instrumental leakage into the vocals).
+for _ep317_ckpt in (
+    "model_bs_roformer_ep_317_sdr_12.9755.safetensors",
+    "model_bs_roformer_ep_317_sdr_12.9755.ckpt",
+):
+    _MODEL_CONFIG_OVERRIDES_BY_FILENAME[_ep317_ckpt] = {"stft_hop_length": 441}
+
 # Latest/best model from each series — shown in the curated loader node.
 # Older versions that are superseded are excluded (Kim FT v1, GaboxR67 fv6, etc.)
 _LATEST_MODEL_NAMES = frozenset({
